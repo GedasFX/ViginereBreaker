@@ -48,7 +48,7 @@ namespace ViginereBreaker
 
             // First element always has offset of 0. Rest are formed as 1, 2; 1, 3; 1, 4...
             var offsetIndicies = new[] { 0 }.Concat(offsets.Select(c => c.Offset).Take(KeyLength - 1)).ToArray();
-            var offsetChunks = chunks.Select((c, i) => OffsetText(c, offsetIndicies[i])).ToArray();
+            var offsetChunks = chunks.Select((c, i) => OffsetText(c, -offsetIndicies[i])).ToArray();
             for (int i = 0; i < CipherText.Length; i++)
             {
                 builder.Append(offsetChunks[i % KeyLength][i / KeyLength]);
@@ -64,7 +64,7 @@ namespace ViginereBreaker
                 var item = new
                 {
                     Key = OffsetText(keySeed, i),
-                    Plaintext = OffsetText(monoText, i)
+                    Plaintext = OffsetText(monoText, -i)
                 };
                 Console.WriteLine($"Key: {item.Key}. Plaintext: {item.Plaintext}");
             }
